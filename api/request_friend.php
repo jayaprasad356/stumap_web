@@ -35,8 +35,10 @@ $db->sql($sql);
 $res = $db->getResult();
 $num = $db->numRows($res);
 if ($num >= 1) {
-    $response['success'] = false;
-    $response['message'] ="Friend Request Already Sent";
+    $sql = "UPDATE friends SET status='$status' WHERE user_id = '$user_id' AND friend_id='$friend_id'";
+    $db->sql($sql);
+    $response['success'] = true;
+    $response['message'] ="Request Updated Successfully";
     print_r(json_encode($response));
     return false;
 }
