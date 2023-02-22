@@ -20,7 +20,6 @@ if (empty($_POST['user_id'])) {
 
 $user_id = $db->escapeString($_POST['user_id']);
 $status = $db->escapeString($_POST['status']);
-
 $sql = "SELECT users.*
         FROM friends
         INNER JOIN users ON users.id = friends.user_id
@@ -30,7 +29,10 @@ $res = $db->getResult();
 $num = $db->numRows($res);
 
 if ($num >= 1) {
-    $sql = "UPDATE friends SET status='$status' WHERE friends.friend_id = '$user_id'";
+    foreach($res as $row){
+        $ID=$row['id'];
+    }
+    $sql = "UPDATE friends SET status='$status' WHERE friends.friend_id = '$user_id' AND friends.user_id='$ID'";
     $db->sql($sql);
     $response['success'] = true;
     $response['message'] ="Requests listed successfully";
