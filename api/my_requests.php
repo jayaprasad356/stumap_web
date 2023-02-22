@@ -19,6 +19,7 @@ if (empty($_POST['user_id'])) {
 }
 
 $user_id = $db->escapeString($_POST['user_id']);
+$status = $db->escapeString($_POST['status']);
 
 $sql = "SELECT users.*
         FROM friends
@@ -29,6 +30,8 @@ $res = $db->getResult();
 $num = $db->numRows($res);
 
 if ($num >= 1) {
+    $sql = "UPDATE friends SET status='$status' WHERE friends.friend_id = '$user_id'";
+    $db->sql($sql);
     $response['success'] = true;
     $response['message'] ="Requests listed successfully";
     $response['total_requests'] = $num;
